@@ -62,6 +62,33 @@ io.on('connection', (socket) => {
       callback()
   })
 
+  socket.on('leave', (options, callback) => {
+    console.log('leave', {
+      id: socket.id,
+      options
+    })
+
+    const {
+      username,
+      room,
+    } = options;
+    
+    console.log(options)
+    socket.leave(room)
+
+    socket.broadcast.to(room).emit('message', generateMessage('Admin', `user ${username} has left`))
+    io.to(room).emit('roomData', {
+        room: room,
+        users: getUsersInRoom(room)
+    })
+
+    callback()
+})
+
+  socket.on('rooms', (_, callback) => {
+    return callback('testtetsttt')
+  }) 
+
   socket.on('sendMessage', (message, callback) => {
       const user = getUser(socket.id)
       // const filter = new Filter()
