@@ -12,7 +12,7 @@ const server = http.createServer(app);
 
 const io = socketIo(server);
 
-const { addUser, removeUser, getUser, getUsersInRoom } = require('./utils/users')
+const { addUser, removeUser, getUser, getUsers, getUsersInRoom } = require('./utils/users')
 const { generateMessage, generateLocationMessage } = require('./utils/messages')
 
 let interval;
@@ -86,7 +86,7 @@ io.on('connection', (socket) => {
 })
 
   socket.on('rooms', (_, callback) => {
-    return callback('testtetsttt')
+    return callback(getUsers());
   }) 
 
   socket.on('sendMessage', (message, callback) => {
