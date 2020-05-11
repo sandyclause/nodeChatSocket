@@ -12,7 +12,7 @@ const server = http.createServer(app);
 
 const io = socketIo(server);
 
-const { addUser, removeUser, getUser, getUsers, getUsersInRoom } = require('./utils/users')
+const { addUser, removeUser, getUser, getUsers, getUsersInRoom, getRoomsFromUsers } = require('./utils/users')
 const { generateMessage, generateLocationMessage } = require('./utils/messages')
 
 let interval;
@@ -59,6 +59,10 @@ io.on('connection', (socket) => {
           users: getUsersInRoom(user.room)
       })
 
+      io.to(user.room).emit('rooms', {
+        rooms: getRoomsFromUsers()
+      })
+
       callback()
   })
 
@@ -85,9 +89,9 @@ io.on('connection', (socket) => {
     callback()
 })
 
-  socket.on('rooms', (_, callback) => {
-    return callback(getUsers());
-  }) 
+  // socket.on('rooms', (_, callback) => {
+  //   return callback(getUsers());
+  // }) 
 
   socket.on('sendMessage', (message, callback) => {
       const user = getUser(socket.id)

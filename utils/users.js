@@ -1,3 +1,4 @@
+const { addRoom } = require('./rooms');
 const users = []
 
 const addUser = ({ id, username, room }) => {
@@ -26,6 +27,8 @@ const addUser = ({ id, username, room }) => {
 
     // Store user
     const user = { id, username, room }
+
+    addRoom(room, id)
     users.push(user)
     return { user }
 }
@@ -47,6 +50,16 @@ const getUsersInRoom = (room) => {
     return users.filter((user) => user.room === room)
 }
 
+const getRoomsFromUsers = () => {
+  const rooms = users.map((user) => {
+    return user.room;
+  });
+
+  console.log(rooms)
+
+  return rooms;
+}
+
 const getUsers = () => {
     return users;
 }
@@ -56,5 +69,6 @@ module.exports = {
     removeUser,
     getUser,
     getUsers,
+    getRoomsFromUsers,
     getUsersInRoom
 }
