@@ -51,11 +51,12 @@ const getUsersInRoom = (room) => {
 }
 
 const getRoomsFromUsers = () => {
-  const rooms = users.map((user) => {
-    return user.room;
-  });
-
-  console.log(rooms)
+  const rooms = users.reduce((acc, user) => {
+    if (!acc.includes(user.room)) {
+      acc.push(user.room);
+    }
+    return acc;
+  }, []).filter(x => x !== null);
 
   return rooms;
 }
